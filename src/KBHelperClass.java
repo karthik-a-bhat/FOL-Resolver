@@ -142,7 +142,8 @@ public class KBHelperClass {
 
                     for (int j = 0; j < kbStmtarr2.length; j++) {
 
-                        String s2 = "~" + kbStmtarr2[j];
+                        String s2=Utilities.negate(kbStmtarr2[j]);
+                        //String s2 = "~" + kbStmtarr2[j];
                         sb2.append(s2);
                         if (j != kbStmtarr2.length - 1) {
                             sb2.append("|");
