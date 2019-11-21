@@ -27,12 +27,7 @@ public class homework {
 
             for(String query: queries){
 
-                if(query.contains("~")) {
-                    query = query.substring(1);
-                }
-                else{
-                    query="~"+query;
-                }
+                query=Utilities.negate(query);
 
                 Stack<String> st1= new Stack<>();
                 st1.push(query);

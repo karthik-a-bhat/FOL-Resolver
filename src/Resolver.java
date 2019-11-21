@@ -200,6 +200,7 @@ public class Resolver {
             }
 
         }
+        //Contradiction, proves true!
         return true;
     }
 
