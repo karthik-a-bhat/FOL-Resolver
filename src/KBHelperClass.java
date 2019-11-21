@@ -117,6 +117,7 @@ public class KBHelperClass {
     }
 
 
+    //Static method to process the KB by removing implication
     public static ArrayList<String> processKB(ArrayList<String> kb){
 
         ArrayList<String> kbNew=new ArrayList<>();
@@ -143,7 +144,6 @@ public class KBHelperClass {
                     for (int j = 0; j < kbStmtarr2.length; j++) {
 
                         String s2=Utilities.negate(kbStmtarr2[j]);
-                        //String s2 = "~" + kbStmtarr2[j];
                         sb2.append(s2);
                         if (j != kbStmtarr2.length - 1) {
                             sb2.append("|");
@@ -156,7 +156,7 @@ public class KBHelperClass {
                     sb2.setLength(0);
 
                 } else {
-                    s1 = "~" + s1;
+                    s1=Utilities.negate(s1);
                 }
                 kbStmt = s1 + sb1.toString();
                 kbNew.add(kbStmt);
@@ -170,6 +170,8 @@ public class KBHelperClass {
         return kbNew;
     }
 
+
+    //Static method to make the final Hashed Knowledge Base
     public static HashMap<String,ArrayList<String>> makeFinalKB(ArrayList<String> kbStd){
 
         HashMap<String,ArrayList<String>> hmFinalKB = new HashMap<>();

@@ -1,4 +1,5 @@
 //FileName -> Utilities.java
+//Description -> Helper Class with utility functions to help in creating the KB and Resolution
 
 public class Utilities {
 
@@ -19,6 +20,7 @@ public class Utilities {
 
     }
 
+    //Static method to get predicates
     public static String getPredicate(String s){
         if(s==null) return s;
         int j=0;

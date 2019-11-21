@@ -1,4 +1,7 @@
-import java.io.*;
+//FileName -> homework.java
+//Description -> Java File for USC CSCI-561 Fall 2019 HW-3
+//FOL Resolution for a given KB
+
 import java.util.*;
 
 public class homework {
@@ -16,9 +19,6 @@ public class homework {
             ArrayList<String> kbStd = KBHelperClass.standardizeKB(kbNew);
 
             HashMap<String,ArrayList<String>> hmFinalKB=KBHelperClass.makeFinalKB(kbStd);
-
-
-            System.out.println("KB Created!");
 
 
             //Resolution starts!

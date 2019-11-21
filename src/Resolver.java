@@ -1,5 +1,5 @@
 //FileName -> Resolver.java
-
+//Description -> Class to resolve the query
 import java.util.*;
 
 public class Resolver {
@@ -11,6 +11,7 @@ public class Resolver {
     }
 
 
+    //Instance method to resolve the given query
     public boolean resolve(int cutOffDepth, Stack<String> stackQ){
 
         while(!stackQ.empty()){
@@ -103,9 +104,9 @@ public class Resolver {
                             String queryArgs=queryArgsArr[z];
                             String kbValArgs=argsToBeUnified[z];
 
-                            if(!hmUnification.containsKey(kbValArgs))
-                                hmUnification.put(kbValArgs,queryArgs);
-
+                            if(!hmUnification.containsKey(kbValArgs)) {
+                                hmUnification.put(kbValArgs, queryArgs);
+                            }
 
                             z+=1;
                         }
@@ -118,19 +119,17 @@ public class Resolver {
                         int v=0;
                         while (v<stackQ.size()){
                             copystack.push(stackarray[v]);
-
                             v+=1;
                         }
 
 
-                        for (String currentkbelement : al2) {
+                        for (String currentkbele : al2) {
 
 
                             for (Map.Entry<String, String> stringStringEntry : hmUnification.entrySet()) {
-                                Map.Entry pair = stringStringEntry;
 
-                                if (currentkbelement.contains((String) pair.getKey()))
-                                    currentkbelement = currentkbelement.replace((String) pair.getKey(), (String) pair.getValue());
+                                if (currentkbele.contains((String) ((Map.Entry) stringStringEntry).getKey()))
+                                    currentkbele = currentkbele.replace((String) ((Map.Entry) stringStringEntry).getKey(), (String) ((Map.Entry) stringStringEntry).getValue());
 
 
                             }
@@ -139,8 +138,8 @@ public class Resolver {
                             String checking = "";
 
                             int f=0;
-                            while (currentkbelement.charAt(f) != '(') {
-                                checking += currentkbelement.charAt(f) + "";
+                            while (currentkbele.charAt(f) != '(') {
+                                checking = checking + currentkbele.charAt(f) + "";
                                 f++;
                             }
 
@@ -151,37 +150,40 @@ public class Resolver {
                             {
 
 
-                                String strOri = currentkbelement;
                                 String temp = "";
-                                if (strOri.contains("~"))
-                                    temp = strOri.substring(1);
-                                else
-                                    temp = "~" + strOri;
-                                int count = 0;
+
+                                temp=Utilities.negate(currentkbele);
+
+
+
+                                int counter = 0;
 
 
 
                                 //Use Entry Set
-                                for (Iterator<String> iterator = stackarraylist.iterator(); iterator.hasNext(); ) {
-                                    String string = iterator.next();
-                                    if (string.equals(temp)) {
 
-                                        iterator.remove();
-                                        count = 1;
+                                for (Iterator<String> itr = stackarraylist.iterator(); itr.hasNext(); ) {
+                                    String str = itr.next();
+                                    if (str.equals(temp)) {
+                                        itr.remove();
+                                        counter = 1;
                                     }
                                 }
-                                if (count != 1)
-                                    stackarraylist.add(strOri);
-
+                                if (counter != 1) {
+                                    stackarraylist.add(currentkbele);
+                                }
                             }
 
                         }
 
-                        Stack<String> finalstack=new Stack<String>();
-                        for(String zz:stackarraylist)
-                            finalstack.push(zz);
+                        Stack<String> fstk=new Stack<>();
 
-                        boolean printing=resolve(++cutOffDepth,finalstack);
+                        for(int zz=0;zz<stackarraylist.size();zz++){
+                            fstk.push(stackarraylist.get(zz));
+                        }
+
+
+                        boolean printing=resolve(++cutOffDepth,fstk);
 
                         if(printing)
                         {

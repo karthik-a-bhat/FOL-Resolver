@@ -1,4 +1,5 @@
 //FileName -> FileUtilitiesClass.java
+//Description -> Helper Class to manage file I/O
 
 import java.io.*;
 import java.util.ArrayList;
@@ -6,6 +7,7 @@ import java.util.List;
 
 public class FileUtilitiesClass {
 
+    //Static method to take Input
     public static ArrayList<ArrayList<String>> readFile() throws IOException{
 
         ArrayList<String> queries= new ArrayList<>();
@@ -72,7 +74,7 @@ public class FileUtilitiesClass {
 
 
 
-
+    //Static method to write to file named 'output.txt'
     public static void writeFile(ArrayList<String> resultList){
         BufferedWriter bfwr=null;
         try {
