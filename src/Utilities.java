@@ -34,6 +34,8 @@ public class Utilities {
     //Static method to check if 2 string arrays can be unified
     public static boolean isUnify(String[] fromQ, String[] fromKB)
     {
+        //TODO check correctness
+        //if(fromKB.length!=fromQ.length) return false;
 
         int val=0;
 
@@ -65,5 +67,29 @@ public class Utilities {
         }
         return val == fromQ.length;
     }
+
+    public static String getArguments(String s){
+
+        String args="";
+
+        int k=0;
+        while(k<s.length()){
+            if(s.charAt(k)=='(')
+            {
+                k++;
+                while(s.charAt(k)!=')')
+                {
+                    args= args + s.charAt(k);
+                    k++;
+                }
+                break;
+            }
+
+            k++;
+        }
+
+        return args;
+    }
+
 
 }

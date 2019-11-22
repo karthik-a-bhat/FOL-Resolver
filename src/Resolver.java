@@ -129,8 +129,19 @@ public class Resolver {
                             for (Map.Entry<String, String> stringStringEntry : hmUnification.entrySet()) {
 
                                 if (currentkbele.contains((String) ((Map.Entry) stringStringEntry).getKey()))
-                                    currentkbele = currentkbele.replace((String) ((Map.Entry) stringStringEntry).getKey(), (String) ((Map.Entry) stringStringEntry).getValue());
+                                    //Replace argument inside the () with value!!!
+                                {
+                                    String args=Utilities.getArguments(currentkbele);
 
+                                    String pred=Utilities.getPredicate(currentkbele);
+                                    //get arguments
+                                    //replace args
+
+                                    //append to currentkbele with ()
+                                    args = args.replace((String) ((Map.Entry) stringStringEntry).getKey(), (String) ((Map.Entry) stringStringEntry).getValue());
+
+                                    currentkbele=pred+"("+args+")";
+                                }
 
                             }
 
