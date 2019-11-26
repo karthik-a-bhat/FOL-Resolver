@@ -1,4 +1,6 @@
 //FileName -> FileUtilitiesClass.java
+//Created By -> Karthik Anand Bhat
+//Date -> 11/25/2019
 //Description -> Helper Class to manage file I/O
 
 import java.io.*;
@@ -8,6 +10,7 @@ import java.util.List;
 public class FileUtilitiesClass {
 
     //Static method to take Input
+    //Returns ArrayList<String> with the Queries and KB
     public static ArrayList<ArrayList<String>> readFile() throws IOException{
 
         ArrayList<String> queries= new ArrayList<>();

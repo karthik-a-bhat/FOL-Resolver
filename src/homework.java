@@ -1,6 +1,7 @@
 //FileName -> homework.java
-//Description -> Java File for USC CSCI-561 Fall 2019 HW-3
-//FOL Resolution for a given KB
+//Created By -> Karthik Anand Bhat
+//Date -> 11/25/2019
+//Description -> Given a Knowledge Base and a query, the program will say if the KB entails the Query
 
 import java.util.*;
 
@@ -8,17 +9,17 @@ public class homework {
 
     public static void main(String[] args){
         try {
+
             ArrayList<ArrayList<String>> retArr=null;
             retArr= FileUtilitiesClass.readFile();
 
             ArrayList<String> queries = retArr.get(0);
+
             //KB's that are created during the intermediate step
             ArrayList<String> kb = retArr.get(1);
-
             ArrayList<String> kbNew = KBHelperClass.processKB(kb);
             ArrayList<String> kbStd = KBHelperClass.standardizeKB(kbNew);
 
-            HashMap<String,ArrayList<String>> hmFinalKB=KBHelperClass.makeFinalKB(kbStd);
 
 
             //Resolution starts!
@@ -32,9 +33,10 @@ public class homework {
                 Stack<String> st1= new Stack<>();
                 st1.push(query);
 
-                //Object of Resolver
-                Resolver robj = new Resolver(hmFinalKB);
+                //Object of class Resolver
+                Resolver robj = new Resolver(KBHelperClass.makeFinalKB(kbStd), kbStd);
 
+                //Result of Resolution
                 boolean result=robj.resolve(0,st1);
 
                 if(result){
@@ -45,8 +47,9 @@ public class homework {
                 }
 
             }
-            //Write file
+            //Write to file
             FileUtilitiesClass.writeFile(resultList);
+
 
         }
         catch (Throwable t){

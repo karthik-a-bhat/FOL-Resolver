@@ -1,13 +1,19 @@
 //FileName -> Resolver.java
 //Description -> Class to resolve the query
+import jdk.jshell.execution.Util;
+
 import java.util.*;
 
 public class Resolver {
 
     private HashMap<String, ArrayList<String>> hmFinalKB = null;
+    private ArrayList<String> kbStd=null;
+    private ArrayList<String> itemsToRemove=new ArrayList<>();
+    private HashMap<String, String> hmUnificationReversed=new HashMap<>();
 
-    public Resolver(HashMap<String,ArrayList<String>> hmFinalKB){
+    public Resolver(HashMap<String,ArrayList<String>> hmFinalKB, ArrayList<String> kbStd){
         this.hmFinalKB=hmFinalKB;
+        this.kbStd=kbStd;
     }
 
 
@@ -15,6 +21,7 @@ public class Resolver {
     public boolean resolve(int cutOffDepth, Stack<String> stackQ){
 
         while(!stackQ.empty()){
+
 
             String query=stackQ.pop();
 
@@ -45,7 +52,7 @@ public class Resolver {
                 int j=0;
                 while (j<al1.size()){
 
-                    if(cutOffDepth>700){
+                    if(cutOffDepth>8000){
                         return false;
                     }
 
@@ -107,6 +114,9 @@ public class Resolver {
                             if(!hmUnification.containsKey(kbValArgs)) {
                                 hmUnification.put(kbValArgs, queryArgs);
                             }
+                            if(!hmUnificationReversed.containsKey(queryArgs)){
+                                hmUnificationReversed.put(queryArgs,kbValArgs);
+                            }
 
                             z+=1;
                         }
@@ -157,7 +167,7 @@ public class Resolver {
 
 
 
-                            if (!checking.equals(predicate))
+                            if(!checking.equals(predicate))
                             {
 
 
@@ -185,6 +195,28 @@ public class Resolver {
                                 }
                             }
 
+                            //Iterate through the HashMap and if value contains predicate with arg, delete it!
+                            else{
+                                itemsToRemove.add(predicate+"("+argInMatchedPred+")");
+                                if(cutOffDepth!=0) {
+                                    //For query args, find
+                                    StringBuilder sb=new StringBuilder();
+
+                                    for(int s=0;s<queryArgsArr.length;s++)
+                                    {
+                                        if(hmUnificationReversed.containsKey(queryArgsArr[s])){
+                                            sb.append(hmUnificationReversed.get(queryArgsArr[s]));
+                                            if(s!=queryArgsArr.length-1) {
+                                                sb.append(",");
+                                            }
+                                        }
+                                    }
+                                    String queryItemToRemove=Utilities.negate(predicate+"("+sb.toString()+")");
+                                    itemsToRemove.add(queryItemToRemove);
+                                }
+                                hmFinalKB=KBHelperClass.makeFinalKBDuringResolution(kbStd,itemsToRemove);
+                            }
+
                         }
 
                         Stack<String> fstk=new Stack<>();
@@ -193,9 +225,15 @@ public class Resolver {
                             fstk.push(stackarraylist.get(zz));
                         }
 
+                        boolean printing=false;
 
-                        boolean printing=resolve(++cutOffDepth,fstk);
+                        try {
+                        printing = resolve(++cutOffDepth, fstk);
 
+                        }
+                        catch (StackOverflowError ex){
+                            return false;
+                        }
                         if(printing)
                         {
                             return true;

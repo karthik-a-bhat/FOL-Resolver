@@ -1,16 +1,15 @@
 //FileName -> KBHelperClass.java
+//Created By -> Karthik Anand Bhat
+//Date -> 11/25/2019
 //Description -> Helper class with methods to process and store the Knowledge Base
 
-
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class KBHelperClass {
 
 
     //Static Method to standardize the KB
+    //Returns standardized KB as an ArrayList<String>
     public static ArrayList<String> standardizeKB(ArrayList<String> kbNew){
         HashMap<String, String> hmStd=null;
 
@@ -118,6 +117,7 @@ public class KBHelperClass {
 
 
     //Static method to process the KB by removing implication
+    //Returns KB after removing implication
     public static ArrayList<String> processKB(ArrayList<String> kb){
 
         ArrayList<String> kbNew=new ArrayList<>();
@@ -172,6 +172,8 @@ public class KBHelperClass {
 
 
     //Static method to make the final Hashed Knowledge Base
+    //Method called every time a new query is executed
+    //Returns KB as a HashMap with predicate as a key and the sentence that it occurs in as its value
     public static HashMap<String,ArrayList<String>> makeFinalKB(ArrayList<String> kbStd){
 
         HashMap<String,ArrayList<String>> hmFinalKB = new HashMap<>();
@@ -226,6 +228,113 @@ public class KBHelperClass {
         return hmFinalKB;
 
     }
+
+
+    //Static method to make the final Hashed Knowledge Base
+    //Returns KB as a HashMap with predicate as a key and the sentence that it occurs in as its value
+    //This method is used during resolution to remove predicates that are resolved
+    //Predicates with constants are not removed
+    public static HashMap<String,ArrayList<String>> makeFinalKBDuringResolution(ArrayList<String> kbStd, ArrayList<String> itemsToRemove){
+
+        HashMap<String,ArrayList<String>> hmFinalKB = new HashMap<>();
+
+        for(String s1: kbStd) {
+
+
+            for (String itemToRemove : itemsToRemove){
+
+                //Predicates with only constants as arguments are retained
+                if(!itemToRemove.contains(",") && Character.isUpperCase(Utilities.getArguments(itemToRemove).charAt(0)))
+                    continue;
+
+                if(itemsToRemove.contains(",")){
+                    String[] arrItemToRem=Utilities.getArguments(itemToRemove).split(",");
+
+                    int val=0;
+                    for(String arrItemToRemString: arrItemToRem){
+                        if(Character.isUpperCase(arrItemToRemString.charAt(0))){
+                            val++;
+                        }
+                    }
+                    if(val==arrItemToRem.length){
+                        continue;
+                    }
+
+
+                }
+
+                if (s1.contains(itemToRemove)) {
+
+                    StringBuilder sb = new StringBuilder();
+
+                    String[] arr = s1.split("\\|");
+                    List<String> al = new ArrayList<>();
+                    Collections.addAll(al, arr);
+
+                    while (al.remove(itemToRemove)) {
+                    }
+
+                    for (int i = 0; i < al.size(); i++) {
+                        sb.append(arr[i]);
+                        if (i != al.size() - 1) {
+                            sb.append("|");
+                        }
+                    }
+                    s1 = sb.toString();
+                }
+        }
+            //Get predicates. Put it in hmFinalKB(if not present), with key as the entire sentence where it appears. Diff K-V for ~ and not ~
+            //Key = Take | value= sentence where Take comes.
+            //Key = ~Take | value= sentence where ~Take comes
+            //Remove itemToRemove
+
+
+
+            if(s1.contains("|")){
+                String[] strarr1 = s1.split("\\|");
+
+                for(String s3 : strarr1){
+                    ArrayList<String> al1= new ArrayList<>();
+                    String s4=Utilities.getPredicate(s3);
+                    al1.add(s1);
+
+                    if(hmFinalKB.containsKey(s4)){
+                        al1=hmFinalKB.get(s4);
+                        al1.add(s1);
+                        hmFinalKB.put(s4,al1);
+                    }
+                    else{
+                        hmFinalKB.put(s4,al1);
+                    }
+
+                }
+            }
+            //Single sentence
+            else if(!s1.equals("")){
+                //Get predicate
+                String s2=Utilities.getPredicate(s1);
+
+                ArrayList<String> al1 = new ArrayList<>();
+                al1.add(s1);
+
+                if(hmFinalKB.containsKey(s2)){
+                    al1=hmFinalKB.get(s2);
+                    al1.add(s1);
+                    hmFinalKB.put(s2,al1);
+                }
+                else{
+                    hmFinalKB.put(s2,al1);
+                }
+
+            }
+
+
+
+        }
+        return hmFinalKB;
+
+    }
+
 
 
 
