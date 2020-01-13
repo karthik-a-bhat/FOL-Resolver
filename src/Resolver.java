@@ -1,7 +1,5 @@
 //FileName -> Resolver.java
 //Description -> Class to resolve the query
-import jdk.jshell.execution.Util;
-
 import java.util.*;
 
 public class Resolver {

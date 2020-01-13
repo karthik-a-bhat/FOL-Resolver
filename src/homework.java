@@ -23,7 +23,7 @@ public class homework {
 
 
             //Resolution starts!
-            ArrayList<String> resultList = new ArrayList<>();
+             ArrayList<String> resultList = new ArrayList<>();
 
 
             for(String query: queries){
